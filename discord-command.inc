@@ -79,7 +79,7 @@ public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const messag
 	}	
 	
 	#if defined discdcmd_DCC_OnChannelMessage
-		return discdcmd_DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const message);
+		return discdcmd_DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, message);
 	#else
 		return 1;
 	#endif
