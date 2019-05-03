@@ -81,7 +81,7 @@ public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const messag
 	}	
 	
 	#if defined discordcmd_DCC_OnChannelMessage
-		return discordcmd_DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const message[]);
+		return discordcmd_DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const message);
 	#else
 		return 1;
 	#endif
