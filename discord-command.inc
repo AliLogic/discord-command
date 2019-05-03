@@ -42,8 +42,8 @@
 
 // Code
 
-public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const message[]) {
-
+public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const message[])
+{
 	new
 		bool: is_bot;
 
@@ -78,7 +78,23 @@ public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const messag
 				CallLocalFunction(discord, "is", _: channel, "\1");
 			}
 		}
-	}
-
-	return 1;
+	}	
+	
+	#if defined discordcmd_DCC_OnChannelMessage
+		return discordcmd_DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const message[]);
+	#else
+		return 1;
+	#endif
 }
+
+
+#if defined _ALS_DCC_OnChannelMessage
+	#undef DCC_OnChannelMessage
+#else
+	#define _ALS_DCC_OnChannelMessage
+#endif
+
+#define DCC_OnChannelMessage discordcmd_DCC_OnChannelMessage
+#if defined discordcmd_DCC_OnChannelMessage
+	forward discordcmd_DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const message[]);
+#endif
