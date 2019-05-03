@@ -1,6 +1,20 @@
 {
-  "user": "AliLogic",
-  "repo": "discord-command",
-  "contributors": ["AliLogic", "JustMichael", "infin1tyy"],
-  "dependencies": ["maddinat0r/samp-discord-connector:v0.2.4"]
+	"user": "infin1tyy",
+	"repo": "discord-command",
+	"entry": "test.pwn",
+	"output": "test.amx",
+	"dependencies": [
+		"sampctl/samp-stdlib",
+		"maddinat0r/samp-discord-connector"
+	],
+	"runtime": {
+		"version": "0.3.7",
+		"mode": "y_testing",
+		"echo": "Loading configuration...",
+		"rcon_password": "password",
+		"port": 8192,
+		"hostname": "SA-MP Server",
+		"maxplayers": 50,
+		"language": ""
+	}
 }
