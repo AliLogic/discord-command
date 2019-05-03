@@ -41,9 +41,7 @@
 #define DISCORD_FAILURE		(0)
 
 // Code
-
-public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const message[])
-{
+public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const message[]) {
 	new
 		bool: is_bot;
 
@@ -58,7 +56,7 @@ public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const messag
 		if ((pos = strfind(message, " ", false, 1)) == -1) { // Space was not found
 
 			strcat(discord, message[1], MAX_CMD_LEN - 8);
-			CallLocalFunction(discord, "is", _: channel, _: author, "\1");
+			CallLocalFunction(discord, "iis", _: channel, _: author, "\1");
 
 		} else { // Space was found
 
@@ -71,17 +69,17 @@ public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const messag
 
 			if (message[pos]) { // Parameter was found
 
-				CallLocalFunction(discord, "is", _: channel, _: author, message[pos]);
+				CallLocalFunction(discord, "iis", _: channel, _: author, message[pos]);
 
 			} else { // Parameter was not found
 
-				CallLocalFunction(discord, "is", _: channel, _: author, "\1");
+				CallLocalFunction(discord, "iis", _: channel, _: author, "\1");
 			}
 		}
 	}	
 	
-	#if defined discordcmd_DCC_OnChannelMessage
-		return discordcmd_DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const message);
+	#if defined discdcmd_DCC_OnChannelMessage
+		return discdcmd_DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, message);
 	#else
 		return 1;
 	#endif
@@ -94,7 +92,7 @@ public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const messag
 	#define _ALS_DCC_OnChannelMessage
 #endif
 
-#define DCC_OnChannelMessage discordcmd_DCC_OnChannelMessage
-#if defined discordcmd_DCC_OnChannelMessage
-	forward discordcmd_DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const message[]);
+#define DCC_OnChannelMessage discdcmd_DCC_OnChannelMessage
+#if defined discdcmd_DCC_OnChannelMessage
+	forward discdcmd_DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const message[]);
 #endif
