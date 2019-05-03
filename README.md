@@ -6,7 +6,8 @@ You need Discord Connector plugin by Maddinat0r and that's all.
 
 ## Examples
 
-```DISCORD:stats(DCC_Channel: channel, params[]) {
+```
+DISCORD:stats(DCC_Channel: channel, params[]) {
 
 	if (channel != gCommandChannel) {
 		return 1;
@@ -36,4 +37,5 @@ DISCORD:tick(DCC_Channel: channel) {
 	DCC_SendChannelMessage(channel, string);
 
 	return 1;
-}```
+}
+```
