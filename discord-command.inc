@@ -5,7 +5,11 @@
 	with iZCMD-like code and functionality. Does
 	not require any additional libraries. Simple.
 
-	Written by AliLogic
+	Author:
+	- AliLogic
+
+	Version:
+	- 0.3.0
 */
 
 // Include guard
@@ -40,7 +44,7 @@
 #define DC:%1(%2) 			\
 	DISCORD:%1(%2)
 
-// Unused code (Can be used later for OnDiscordCMDReceive or OnDiscordCMDPerformed)
+// Command result
 
 #define DISCORD_SUCCESS		(1)
 #define DISCORD_FAILURE		(0)
@@ -61,7 +65,12 @@ public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const messag
 		if ((pos = strfind(message, " ", false, 1)) == -1) { // Space was not found
 
 			strcat(discord, message[1], MAX_CMD_LEN - 8);
-			CallLocalFunction(discord, "iis", _: channel, _: author, "\1");
+
+			#if defined OnDiscordCommandPerformed
+				OnDiscordCommandPerformed(channel, author, bool: CallLocalFunction(discord, "iis", _: channel, _: author, "\1"));
+			#else
+				CallLocalFunction(discord, "iis", _: channel, _: author, "\1");
+			#endif
 
 		} else { // Space was found
 
@@ -74,11 +83,19 @@ public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const messag
 
 			if (message[pos]) { // Parameter was found
 
-				CallLocalFunction(discord, "iis", _: channel, _: author, message[pos]);
+				#if defined OnDiscordCommandPerformed
+					OnDiscordCommandPerformed(channel, author, bool: CallLocalFunction(discord, "iis", _: channel, _: author, message[pos]));
+				#else
+					CallLocalFunction(discord, "iis", _: channel, _: author, message[pos]);
+				#endif
 
 			} else { // Parameter was not found
 
-				CallLocalFunction(discord, "iis", _: channel, _: author, "\1");
+				#if defined OnDiscordCommandPerformed
+					OnDiscordCommandPerformed(channel, author, bool: CallLocalFunction(discord, "iis", _: channel, _: author, "\1"));
+				#else
+					CallLocalFunction(discord, "iis", _: channel, _: author, "\1");
+				#endif
 			}
 		}
 	}	
@@ -90,6 +107,7 @@ public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const messag
 	#endif
 }
 
+// Hooking and callbacks
 
 #if defined _ALS_DCC_OnChannelMessage
 	#undef DCC_OnChannelMessage
@@ -100,4 +118,8 @@ public DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const messag
 #define DCC_OnChannelMessage discdcmd_DCC_OnChannelMessage
 #if defined discdcmd_DCC_OnChannelMessage
 	forward discdcmd_DCC_OnChannelMessage(DCC_Channel: channel, DCC_User: author, const message[]);
+#endif
+
+#if defined OnDiscordCommandPerformed
+	forward OnDiscordCommandPerformed(DCC_Channel: channel, DCC_User: author, bool: success);
 #endif
