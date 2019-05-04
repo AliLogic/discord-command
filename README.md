@@ -29,6 +29,8 @@ My own discord command processor alternative, based on iZCMD-like code and funct
 
 You need Discord Connector plugin by Maddinat0r and that's all.
 
+#### Version: 0.3.0
+
 ## Installation
 
 Simply install to your project:
@@ -62,7 +64,7 @@ DISCORD:stats(DCC_Channel: channel, DCC_User: author, params[]) {
 		name[MAX_PLAYER_NAME];
 
 	if (sscanf(params, "s[24]", name))
-		return DCC_SendChannelMessage(channel, ":warning: You must provide a name of the player.");
+		return DCC_SendChannelMessage(channel, ":warning: You must provide name of the player.");
 
 	// Do something here
 
