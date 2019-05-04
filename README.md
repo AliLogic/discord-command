@@ -1,6 +1,6 @@
 # discord-command
 
-[![sampctl](https://shields.southcla.ws/badge/sampctl-discord--command-2f2f2f.svg?style=for-the-badge)](https://github.com/infin1tyy/discord-command)
+[![sampctl](https://shields.southcla.ws/badge/sampctl-discord--command-2f2f2f.svg?style=for-the-badge)](https://github.com/AliLogic/discord-command)
 
 <!--
 Short description of your library, why it's useful, some examples, pictures or
@@ -52,7 +52,7 @@ in this section. If your library is passive and has no API, simply omit this
 section.
 -->
 ```
-DISCORD:stats(DCC_Channel: channel, params[]) {
+DISCORD:stats(DCC_Channel: channel, DCC_User: author, params[]) {
 
 	if (channel != gCommandChannel) {
 		return 1;
@@ -69,7 +69,7 @@ DISCORD:stats(DCC_Channel: channel, params[]) {
 	return 1;
 }
 
-DISCORD:tick(DCC_Channel: channel) {
+DISCORD:tick(DCC_Channel: channel, DCC_User: author) {
 
 	if (channel != gCommandChannel) {
 		return 1;
