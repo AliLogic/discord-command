@@ -34,7 +34,7 @@ You need Discord Connector plugin by Maddinat0r and that's all.
 Simply install to your project:
 
 ```bash
-sampctl package install infin1tyy/discord-command
+sampctl package install AliLogic/discord-command
 ```
 
 Include in your code and begin using the library:
