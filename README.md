@@ -85,17 +85,13 @@ DISCORD:tick(DCC_Channel: channel, DCC_User: author) {
 
 	return 1;
 }
-```
 
-## Testing
+public OnDiscordCommandPerformed(DCC_Channel: channel, DCC_User: author, bool: success) {
 
-<!--
-Depending on whether your package is tested via in-game "demo tests" or
-y_testing unit-tests, you should indicate to readers what to expect below here.
--->
+	if (!success) {
+		return SendDiscordMessage(channel, ":x: The command you specified doesn't exist.");
+	}
 
-To test, simply run the package:
-
-```bash
-sampctl package run
+	return 1;
+}
 ```
