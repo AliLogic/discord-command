@@ -11,15 +11,5 @@
 	"dependencies": [
 		"sampctl/samp-stdlib",
 		"maddinat0r/samp-discord-connector"
-	],
-	"runtime": {
-		"version": "0.3.7",
-		"mode": "y_testing",
-		"echo": "Loading configuration...",
-		"rcon_password": "password",
-		"port": 8192,
-		"hostname": "SA-MP Server",
-		"maxplayers": 50,
-		"language": ""
-	}
+	]
 }
