@@ -52,22 +52,22 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 		DCC_User: author,
 		DCC_Channel: channel,
 		bool: is_bot,
-		string[100];
+		discord_cmd[100];
 
 	DCC_GetMessageChannel(message, channel);
 	DCC_GetMessageAuthor(message, author);
 	DCC_IsUserBot(author, is_bot);
-	DCC_GetMessageContent(message, string);
+	DCC_GetMessageContent(message, discord_cmd);
 
-	if (!is_bot && string[0] == CMD_PREFIX) { // Skip if the message author is a bot or is not a command
+	if (!is_bot && discord_cmd[0] == CMD_PREFIX) { // Skip if the message author is a bot or is not a command
 
 		new // static had issues
 			discord[MAX_CMD_LEN] = "discord_",
 			pos;
 
-		if ((pos = strfind(string, " ", false, 1)) == -1) { // Space was not found
+		if ((pos = strfind(discord_cmd, " ", false, 1)) == -1) { // Space was not found
 
-			strcat(discord, string[1], MAX_CMD_LEN - 8);
+			strcat(discord, discord_cmd[1], MAX_CMD_LEN - 8);
 
 			#if defined OnDiscordCommandPerformed
 				OnDiscordCommandPerformed(channel, author, bool: CallLocalFunction(discord, "iis", _: channel, _: author, "\1"));
@@ -77,14 +77,14 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 
 		} else { // Space was found
 
-			strcat(discord, string[1], pos + 8);
+			strcat(discord, discord_cmd[1], pos + 8);
 
-			while (string[pos] == ' ') { // Checks for spaces
+			while (discord_cmd[pos] == ' ') { // Checks for spaces
 
 				pos ++;
 			}
 
-			if (string[pos]) { // Parameter was found
+			if (discord_cmd[pos]) { // Parameter was found
 
 				#if defined OnDiscordCommandPerformed
 					OnDiscordCommandPerformed(channel, author, bool: CallLocalFunction(discord, "iis", _: channel, _: author, string[pos]));
