@@ -87,9 +87,9 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 			if (discord_cmd[pos]) { // Parameter was found
 
 				#if defined OnDiscordCommandPerformed
-					OnDiscordCommandPerformed(channel, author, bool: CallLocalFunction(discord, "iis", _: channel, _: author, string[pos]));
+					OnDiscordCommandPerformed(channel, author, bool: CallLocalFunction(discord, "iis", _: channel, _: author, discord_cmd[pos]));
 				#else
-					CallLocalFunction(discord, "iis", _: channel, _: author, string[pos]);
+					CallLocalFunction(discord, "iis", _: channel, _: author, discord_cmd[pos]);
 				#endif
 
 			} else { // Parameter was not found
