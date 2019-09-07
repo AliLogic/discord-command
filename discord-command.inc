@@ -28,7 +28,7 @@
 // Prefix
 
 #if	!defined CMD_PREFIX
-	#define	CMD_PREFIX		'!'
+	#define	CMD_PREFIX		'27days'
 #endif
 
 // Macros
