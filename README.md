@@ -89,7 +89,7 @@ DISCORD:tick(DCC_Channel: channel, DCC_User: author) {
 public OnDiscordCommandPerformed(DCC_Channel: channel, DCC_User: author, bool: success) {
 
 	if (!success) {
-		return SendDiscordMessage(channel, ":x: The command you specified doesn't exist.");
+		return DCC_SendChannelMessage(channel, ":x: The command you specified doesn't exist.");
 	}
 
 	return 1;
