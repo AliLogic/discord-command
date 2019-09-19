@@ -29,7 +29,7 @@ My own discord command processor alternative, based on iZCMD-like code and funct
 
 You need Discord Connector plugin by Maddinat0r and that's all.
 
-#### Version: 0.3.0
+#### Version: 0.4.0
 
 ## Installation
 
@@ -54,42 +54,42 @@ in this section. If your library is passive and has no API, simply omit this
 section.
 -->
 ```
-DISCORD:stats(DCC_Channel: channel, DCC_User: author, params[]) {
+DISCORD:stats(DCC_Message: message_id, params[]) {
 
-	if (channel != gCommandChannel) {
+	new
+		DCC_Channel: channel_id,
+		DCC_Channel: channel_cmd
+	;
+
+	DCC_GetMessageChannel(messageid, channelid);
+	channel_cmd = DCC_FindChannelByName("bot-commands");
+
+	if (channel_id != channel_cmd) {
 		return 1;
 	}
 
 	new
-		name[MAX_PLAYER_NAME];
+		name[MAX_PLAYER_NAME]
+	;
 
 	if (sscanf(params, "s[24]", name))
-		return DCC_SendChannelMessage(channel, ":warning: You must provide name of the player.");
+		return DCC_SendChannelMessage(channel_id, ":warning: You must provide name of the player.");
 
 	// Do something here
 
 	return 1;
 }
 
-DISCORD:tick(DCC_Channel: channel, DCC_User: author) {
-
-	if (channel != gCommandChannel) {
-		return 1;
-	}
+public OnDiscordCommandPerformed(command[MAX_DCC_CMD_LEN], DCC_Message: message_id, bool: success) {
 
 	new
-		string[50];
-
-	format(string, sizeof string, ":stopwatch: Tick: %i", GetServerTickRate());
-	DCC_SendChannelMessage(channel, string);
-
-	return 1;
-}
-
-public OnDiscordCommandPerformed(DCC_Channel: channel, DCC_User: author, bool: success) {
+		DCC_Channel: channel_id
+	;
+	
+	DCC_GetMessageChannel(message_id, channel_id);
 
 	if (!success) {
-		return DCC_SendChannelMessage(channel, ":x: The command you specified doesn't exist.");
+		return DCC_SendChannelMessage(channel_id, ":x: The command you specified doesn't exist.");
 	}
 
 	return 1;
