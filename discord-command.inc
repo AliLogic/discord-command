@@ -59,12 +59,12 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 	if (!is_bot && message_content[0] == CMD_PREFIX) { // Skip if the message author is a bot or is not a command
 
 		new // static had issues
-			discord_cmd[MAX_CMD_LEN] = "discord_",
+			discord_cmd[MAX_DCC_CMD_LEN] = "discord_",
 			pos;
 
 		if ((pos = strfind(message_content, " ", false, 1)) == -1) { // Space was not found
 
-			strcat(discord_cmd, message_content[1], MAX_CMD_LEN - 8);
+			strcat(discord_cmd, message_content[1], MAX_DCC_CMD_LEN - 8);
 
 			#if defined OnDiscordCommandPerformed
 				OnDiscordCommandPerformed(discord_cmd, message, bool: CallLocalFunction(discord_cmd, "is", _: message, "\1"));
