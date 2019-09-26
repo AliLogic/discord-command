@@ -29,7 +29,7 @@ My own discord command processor alternative, based on iZCMD-like code and funct
 
 You need Discord Connector plugin by Maddinat0r and that's all.
 
-#### Version: 0.4.0
+#### Version: 0.4.0 (Code Breaking Changes)
 
 ## Installation
 
@@ -44,6 +44,10 @@ Include in your code and begin using the library:
 ```pawn
 #include <discord-command>
 ```
+
+## Changes
+
+The command parameters have been changed to `DCC_Message: message_id, params[]` from `DCC_Channel: channel, DCC_User: author, params[])` so you can make use of the functionality that the discord connector plugin provides. This can be useful if you want to use certain parameters, like author, or maybe the message id so you can delete it once its executed.
 
 ## Usage
 
@@ -89,9 +93,19 @@ public OnDiscordCommandPerformed(command[MAX_DCC_CMD_LEN], DCC_Message: message_
 	DCC_GetMessageChannel(message_id, channel_id);
 
 	if (!success) {
-		return DCC_SendChannelMessage(channel_id, ":x: The command you specified doesn't exist.");
+		return DCC_SendChannelMessage(channel_id, ":x: The command you specified doesn't exist.", "OnDiscordInvalidCommand");
 	}
 
 	return 1;
+}
+
+forward public OnDiscordInvalidCommand();
+public OnDiscordInvalidCommand() {
+	new
+		DCC_Message: message_id = DCC_GetCreatedMessage
+	;
+	
+	// maybe run a timer to delete it?
+	DCC_DeleteMessage(message_id);
 }
 ```
