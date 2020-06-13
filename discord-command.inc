@@ -52,7 +52,8 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 		DCC_User: author,
 		DCC_Channel: channel,
 		bool: is_bot,
-		discord_cmd[100];
+		discord_cmd[200]
+	;
 
 	DCC_GetMessageChannel(message, channel);
 	DCC_GetMessageAuthor(message, author);
