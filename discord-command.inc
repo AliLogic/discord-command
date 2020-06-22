@@ -15,7 +15,7 @@
 #endif
 #define _discordcmd_included
 
-#tryinclude <discord-connector_new>
+#tryinclude <discord-connector>
 #if !defined dcconnector_included
 	#error To use this include you need to have "https://github.com/maddinat0r/samp-discord-connector" installed
 #endif
