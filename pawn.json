@@ -10,7 +10,8 @@
 	],
 	"dependencies": [
 		"sampctl/samp-stdlib",
-		"maddinat0r/samp-discord-connector"
+		"maddinat0r/samp-discord-connector",
+		"y-less/sscanf"
 	],
 	"runtime": {
 		"version": "0.3.7",
