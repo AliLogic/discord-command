@@ -27,9 +27,11 @@ Happy Pawning!
 -->
 My own discord command processor alternative, based on iZCMD-like code and functionality.
 
-You need Discord Connector plugin by Maddinat0r and that's all.
+### Requirements:
+- Discord Connector (@madinat0r)
+- SSCANF (@Y-Less)
 
-#### Version: 0.3.0
+#### Version: 0.3.1
 
 ## Installation
 
