@@ -2,8 +2,8 @@
 	Discord Command Processor
 
 	A simple library for discord based commands
-	with iZCMD-like code and functionality. Does
-	not require any additional libraries. Simple.
+	with iZCMD-like code and functionality. Re-
+	quires SSCANF.
 
 	Written by AliLogic
 */
@@ -15,15 +15,24 @@
 #endif
 #define _discordcmd_included
 
+#tryinclude <sscanf2>
+#if !defined _INC_SSCANF
+	#error To use this include you need to have "https://github.com/Y-Less/sscanf" installed
+#endif
+
 #tryinclude <discord-connector>
 #if !defined dcconnector_included
 	#error To use this include you need to have "https://github.com/maddinat0r/samp-discord-connector" installed
 #endif
 
+#if !defined isnull
+    #define isnull(%1) ((!(%1[0])) || (((%1[0]) == '\1') && (!(%1[1]))))
+#endif
+
 // Config
 
-#define MAX_CMD_LEN			(50)
-#define MAX_CMD_NAME		(10)
+#define MAX_CMD_LEN			30
+#define MAX_CMD_NAME		10
 
 // Prefix
 
@@ -51,58 +60,45 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 	new
 		DCC_User: author,
 		DCC_Channel: channel,
-		bool: is_bot,
-		discord_cmd[200]
+		bool: is_bot = false,
+		content[200 + MAX_CMD_NAME + 2],
+		command[MAX_CMD_NAME],
+		params[200],
+		discord[MAX_CMD_LEN] = "discord_"
 	;
 
 	DCC_GetMessageChannel(message, channel);
-	DCC_GetMessageAuthor(message, author);
+
+	if (!DCC_GetMessageAuthor(message, author)) { // The message author is invalid
+		return 0;
+	}
+
 	DCC_IsUserBot(author, is_bot);
-	DCC_GetMessageContent(message, discord_cmd);
+	DCC_GetMessageContent(message, content);
 
-	if (!is_bot && discord_cmd[0] == CMD_PREFIX) { // Skip if the message author is a bot or is not a command
+	if (is_bot || content[0] != CMD_PREFIX) { // Skip if the message author is a bot or is not a command
+		return 0;
+	}
 
-		new // static had issues
-			discord[MAX_CMD_LEN] = "discord_",
-			pos;
+	if (sscanf(content, "s["#MAX_CMD_NAME"]S()[200]", command, params)) {
+		return 0;
+	}
 
-		if ((pos = strfind(discord_cmd, " ", false, 1)) == -1) { // Space was not found
+	for (new i = strlen(command) - 1; i != 0; i --) {
+		command[i] |= 0x20; // lower case using bitwise OR operator
+	}
 
-			strcat(discord, discord_cmd[1], MAX_CMD_LEN - 8);
+	strcat(discord, command[1]);
 
-			#if defined OnDiscordCommandPerformed
-				OnDiscordCommandPerformed(channel, author, bool: CallLocalFunction(discord, "iis", _: channel, _: author, "\1"));
-			#else
-				CallLocalFunction(discord, "iis", _: channel, _: author, "\1");
-			#endif
+	if (isnull(params)) {
+		params = "\1";
+	}
 
-		} else { // Space was found
-
-			strcat(discord, discord_cmd[1], pos + 8);
-
-			while (discord_cmd[pos] == ' ') { // Checks for spaces
-
-				pos ++;
-			}
-
-			if (discord_cmd[pos]) { // Parameter was found
-
-				#if defined OnDiscordCommandPerformed
-					OnDiscordCommandPerformed(channel, author, bool: CallLocalFunction(discord, "iis", _: channel, _: author, discord_cmd[pos]));
-				#else
-					CallLocalFunction(discord, "iis", _: channel, _: author, discord_cmd[pos]);
-				#endif
-
-			} else { // Parameter was not found
-
-				#if defined OnDiscordCommandPerformed
-					OnDiscordCommandPerformed(channel, author, bool: CallLocalFunction(discord, "iis", _: channel, _: author, "\1"));
-				#else
-					CallLocalFunction(discord, "iis", _: channel, _: author, "\1");
-				#endif
-			}
-		}
-	}	
+	#if defined OnDiscordCommandPerformed
+		OnDiscordCommandPerformed(channel, author, bool: CallLocalFunction(discord, "iis", _: channel, _: author, params));
+	#else
+		CallLocalFunction(discord, "iis", _: channel, _: author, params);
+	#endif
 	
 	#if defined discdcmd_DCC_OnMessageCreate
 		return discdcmd_DCC_OnMessageCreate(DCC_Message: message);
