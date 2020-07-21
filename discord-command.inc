@@ -32,7 +32,7 @@
 // Config
 
 #define MAX_CMD_LEN			30
-#define MAX_CMD_NAME		10
+#define MAX_CMD_NAME		20
 
 // Prefix
 
@@ -70,18 +70,30 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 	DCC_GetMessageChannel(message, channel);
 
 	if (!DCC_GetMessageAuthor(message, author)) { // The message author is invalid
-		return 0;
+		#if defined discdcmd_DCC_OnMessageCreate
+			return discdcmd_DCC_OnMessageCreate(DCC_Message: message);
+		#else
+			return 0;
+		#endif
 	}
 
 	DCC_IsUserBot(author, is_bot);
 	DCC_GetMessageContent(message, content);
 
 	if (is_bot || content[0] != CMD_PREFIX) { // Skip if the message author is a bot or is not a command
-		return 0;
+		#if defined discdcmd_DCC_OnMessageCreate
+			return discdcmd_DCC_OnMessageCreate(DCC_Message: message);
+		#else
+			return 0;
+		#endif
 	}
 
 	if (sscanf(content, "s["#MAX_CMD_NAME"]S()[200]", command, params)) {
-		return 0;
+		#if defined discdcmd_DCC_OnMessageCreate
+			return discdcmd_DCC_OnMessageCreate(DCC_Message: message);
+		#else
+			return 0;
+		#endif
 	}
 
 	for (new i = strlen(command) - 1; i != 0; i --) {
