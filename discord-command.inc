@@ -31,7 +31,7 @@
 
 // Config
 
-#define MAX_CMD_LEN			30
+#define MAX_CMD_LEN			32
 #define MAX_CMD_NAME		20
 
 // Prefix
@@ -59,15 +59,12 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 
 	new
 		DCC_User: author,
-		DCC_Channel: channel,
 		bool: is_bot = false,
-		content[200 + MAX_CMD_NAME + 2],
+		content[256 + MAX_CMD_NAME + 2],
 		command[MAX_CMD_NAME],
-		params[200],
+		params[256],
 		discord[MAX_CMD_LEN] = "discord_"
 	;
-
-	DCC_GetMessageChannel(message, channel);
 
 	if (!DCC_GetMessageAuthor(message, author)) { // The message author is invalid
 		#if defined discdcmd_DCC_OnMessageCreate
@@ -88,7 +85,7 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 		#endif
 	}
 
-	if (sscanf(content, "s["#MAX_CMD_NAME"]S()[200]", command, params)) {
+	if (sscanf(content, "s["#MAX_CMD_NAME"]S()[256]", command, params)) {
 		#if defined discdcmd_DCC_OnMessageCreate
 			return discdcmd_DCC_OnMessageCreate(DCC_Message: message);
 		#else
@@ -107,9 +104,9 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 	}
 
 	#if defined OnDiscordCommandPerformed
-		OnDiscordCommandPerformed(channel, author, bool: CallLocalFunction(discord, "iis", _: channel, _: author, params));
+		OnDiscordCommandPerformed(message, bool: CallLocalFunction(discord, "iis", _: message, _: author, params));
 	#else
-		CallLocalFunction(discord, "iis", _: channel, _: author, params);
+		CallLocalFunction(discord, "iis", _: message, _: author, params);
 	#endif
 	
 	#if defined discdcmd_DCC_OnMessageCreate
@@ -133,5 +130,5 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 #endif
 
 #if defined OnDiscordCommandPerformed
-	forward OnDiscordCommandPerformed(DCC_Channel: channel, DCC_User: author, bool: success);
+	forward OnDiscordCommandPerformed(DCC_Message: message, DCC_User: author, bool: success);
 #endif

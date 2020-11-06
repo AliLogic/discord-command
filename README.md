@@ -1,6 +1,6 @@
 # discord-command
 
-[![sampctl](https://shields.southcla.ws/badge/sampctl-discord--command-2f2f2f.svg?style=for-the-badge)](https://github.com/AliLogic/discord-command)
+[![sampctl](https://img.shields.io/badge/sampctl-discord--command-2f2f2f.svg?style=for-the-badge)](https://github.com/AliLogic/discord-command)
 
 <!--
 Short description of your library, why it's useful, some examples, pictures or
@@ -27,11 +27,20 @@ Happy Pawning!
 -->
 My own discord command processor alternative, based on iZCMD-like code and functionality.
 
+### Why this?
+
+- Works in nicely with your pre-existing code, thanks to ALS Hooking.
+- Full control over the command message, delete, get the channel id, author etc.
+- All commands are case insensitive.
+- Optional event if you want to send users a message if their command failed or not.
+- Written nicely (yes!)
+
 ### Requirements:
-- Discord Connector (@madinat0r)
+
+- Discord Connector (@maddinat0r)
 - SSCANF (@Y-Less)
 
-#### Version: 0.3.1
+#### Version: 0.4.0
 
 ## Installation
 
@@ -56,42 +65,43 @@ in this section. If your library is passive and has no API, simply omit this
 section.
 -->
 ```
-DISCORD:stats(DCC_Channel: channel, DCC_User: author, params[]) {
+new
+	DCC_Channel: gCommandChannel
+;
+
+public OnGameModeInit() {
+	gCommandChannel = DCC_GetChannelById("channel-id-here");
+}
+
+DISCORD:stats(DCC_Message: message, DCC_User: author, params[]) {
+
+	new
+		DCC_Channel: channel
+	;
+
+	DCC_GetMessageAuthor(message, channel);
 
 	if (channel != gCommandChannel) {
 		return 1;
 	}
 
 	new
-		name[MAX_PLAYER_NAME];
+		name[MAX_PLAYER_NAME]
+	;
 
-	if (sscanf(params, "s[24]", name))
+	if (sscanf(params, "s[24]", name)) {
 		return DCC_SendChannelMessage(channel, ":warning: You must provide name of the player.");
+	}
 
 	// Do something here
 
 	return 1;
 }
 
-DISCORD:tick(DCC_Channel: channel, DCC_User: author) {
-
-	if (channel != gCommandChannel) {
-		return 1;
-	}
-
-	new
-		string[50];
-
-	format(string, sizeof string, ":stopwatch: Tick: %i", GetServerTickRate());
-	DCC_SendChannelMessage(channel, string);
-
-	return 1;
-}
-
-public OnDiscordCommandPerformed(DCC_Channel: channel, DCC_User: author, bool: success) {
+public OnDiscordCommandPerformed(DCC_Message: message, bool: success) {
 
 	if (!success) {
-		return DCC_SendChannelMessage(channel, ":x: The command you specified doesn't exist.");
+		return DCC_SendChannelMessage(channel, ":x: The command entered doesn't exist.");
 	}
 
 	return 1;
