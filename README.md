@@ -101,6 +101,11 @@ DISCORD:stats(DCC_Message: message, DCC_User: author, params[]) {
 public OnDiscordCommandPerformed(DCC_Message: message, bool: success) {
 
 	if (!success) {
+		new
+			DCC_Channel: channel
+		;
+		
+		DCC_GetMessageChannel(message, channel);
 		return DCC_SendChannelMessage(channel, ":x: The command entered doesn't exist.");
 	}
 
