@@ -79,7 +79,7 @@ DISCORD:stats(DCC_Message: message, DCC_User: author, params[]) {
 		DCC_Channel: channel
 	;
 
-	DCC_GetMessageAuthor(message, channel);
+	DCC_GetMessageChannel(message, channel);
 
 	if (channel != gCommandChannel) {
 		return 1;
