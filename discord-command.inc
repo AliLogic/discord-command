@@ -104,7 +104,7 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 	}
 
 	#if defined OnDiscordCommandPerformed
-		OnDiscordCommandPerformed(message, bool: CallLocalFunction(discord, "iis", _: message, _: author, params));
+		OnDiscordCommandPerformed(message, author, bool: CallLocalFunction(discord, "iis", _: message, _: author, params));
 	#else
 		CallLocalFunction(discord, "iis", _: message, _: author, params);
 	#endif
@@ -131,4 +131,4 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 
 #if defined OnDiscordCommandPerformed
 	forward OnDiscordCommandPerformed(DCC_Message: message, DCC_User: author, bool: success);
-#endif
+#endif	
