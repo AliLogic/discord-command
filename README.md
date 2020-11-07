@@ -70,7 +70,7 @@ new
 ;
 
 public OnGameModeInit() {
-	gCommandChannel = DCC_GetChannelById("channel-id-here");
+	gCommandChannel = DCC_FindChannelById("channel-id-here");
 }
 
 DISCORD:stats(DCC_Message: message, DCC_User: author, params[]) {
