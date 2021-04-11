@@ -66,7 +66,7 @@ public DCC_OnMessageCreate(DCC_Message: message) {
 		discord[MAX_CMD_LEN] = "discord_"
 	;
 
-	if (!DCC_GetMessageAuthor(message, author)) { // The message author is invalid
+	if (!DCC_GetMessageAuthor(message, author) || author == DCC_INVALID_USER) { // The message author is invalid
 		#if defined discdcmd_DCC_OnMessageCreate
 			return discdcmd_DCC_OnMessageCreate(DCC_Message: message);
 		#else
